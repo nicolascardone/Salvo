@@ -25,8 +25,8 @@ public class GamePlayer {
     @JoinColumn(name="player_id")
     private Player playerID;
 
-    @OneToMany(mappedBy="gamePlayerID", fetch=FetchType.EAGER)
-    Set<Ship> ships;
+    @OneToMany(mappedBy="gamePlayer_id", fetch=FetchType.EAGER)
+    private Set<Ship> ships;
 
     public GamePlayer () {}
 
@@ -76,10 +76,12 @@ public class GamePlayer {
         this.id = id;
     }
 
+
     public Map<String, Object> makeGamePlayerDTO(){
         Map<String, Object>  dto = new LinkedHashMap<>();
         dto.put("id", this.getId());
         dto.put("player", this.getPlayerID().makePlayerDTO());
+        dto.put("ships", this.getShips().stream().map(x -> x.makeShipDTO()).collect(Collectors.toList()));
         return dto;
     }
 
