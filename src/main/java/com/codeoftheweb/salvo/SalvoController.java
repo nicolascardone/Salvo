@@ -25,6 +25,6 @@ public class SalvoController
     @RequestMapping("/game_view/{gamePlayerId}")
     public Map<String, Object> findGamePlayer(@PathVariable Long gamePlayerId) {
         GamePlayer gamePlayer = gamePlayerRepository.findById(gamePlayerId).get();
-    return gamePlayer.getGameID().makeGameDTO();
+    return gamePlayer.getGame().makeGameDTO();
     }
 }

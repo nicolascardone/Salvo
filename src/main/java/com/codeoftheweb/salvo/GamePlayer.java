@@ -18,22 +18,22 @@ public class GamePlayer {
     private LocalDateTime joinDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="game_id")
-    private Game gameID;
+    @JoinColumn(name="game")
+    private Game game;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="player_id")
-    private Player playerID;
+    @JoinColumn(name="player")
+    private Player player;
 
     @OneToMany(mappedBy="gamePlayer_id", fetch=FetchType.EAGER)
     private Set<Ship> ships;
 
     public GamePlayer () {}
 
-    public GamePlayer(LocalDateTime joinDate, Game gameID, Player playerID) {
+    public GamePlayer(LocalDateTime joinDate, Game game, Player player) {
         this.joinDate = joinDate;
-        this.gameID = gameID;
-        this.playerID = playerID;
+        this.game = game;
+        this.player = player;
     }
 
     public Set<Ship> getShips() {
@@ -44,20 +44,20 @@ public class GamePlayer {
         this.ships = ships;
     }
 
-    public Game getGameID() {
-        return gameID;
+    public Game getGame() {
+        return game;
     }
 
-    public void setGameID(Game gameID) {
-        this.gameID = gameID;
+    public void setGame(Game game) {
+        this.game = game;
     }
 
-    public Player getPlayerID() {
-        return playerID;
+    public Player getPlayer() {
+        return player;
     }
 
-    public void setPlayerID(Player playerID) {
-        this.playerID = playerID;
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public LocalDateTime getJoinDate() {
@@ -80,7 +80,7 @@ public class GamePlayer {
     public Map<String, Object> makeGamePlayerDTO(){
         Map<String, Object>  dto = new LinkedHashMap<>();
         dto.put("id", this.getId());
-        dto.put("player", this.getPlayerID().makePlayerDTO());
+        dto.put("player", this.getPlayer().makePlayerDTO());
         dto.put("ships", this.getShips().stream().map(x -> x.makeShipDTO()).collect(Collectors.toList()));
         return dto;
     }
