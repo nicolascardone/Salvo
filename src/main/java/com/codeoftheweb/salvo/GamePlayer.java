@@ -28,6 +28,9 @@ public class GamePlayer {
     @OneToMany(mappedBy="gamePlayer_id", fetch=FetchType.EAGER)
     private Set<Ship> ships;
 
+    @OneToMany(mappedBy="gamePlayer", fetch=FetchType.EAGER)
+    private Set<Salvo> salvos;
+
     public GamePlayer () {}
 
     public GamePlayer(LocalDateTime joinDate, Game game, Player player) {
@@ -76,6 +79,13 @@ public class GamePlayer {
         this.id = id;
     }
 
+    public Set<Salvo> getSalvos() {
+        return salvos;
+    }
+
+    public void setSalvos(Set<Salvo> salvos) {
+        this.salvos = salvos;
+    }
 
     public Map<String, Object> makeGamePlayerDTO(){
         Map<String, Object>  dto = new LinkedHashMap<>();

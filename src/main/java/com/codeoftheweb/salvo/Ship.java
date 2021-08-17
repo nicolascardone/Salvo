@@ -24,7 +24,7 @@ public class Ship {
     @Column(name = "shipLocation")
     private List<String> shipLocation = new ArrayList<>();
 
-    public Ship() { }
+    public Ship() {}
 
     public Ship(String shipType, GamePlayer gamePlayer_id, List<String> shipLocation) {
         this.shipType = shipType;
