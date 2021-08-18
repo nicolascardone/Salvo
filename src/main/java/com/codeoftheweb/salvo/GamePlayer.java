@@ -99,6 +99,8 @@ public class GamePlayer {
         dto.put("created",this.getGame().getCreationDate());
         dto.put("gamePlayers", this.getGame().getGameplayers().stream().map(d -> d.makeGamePlayerDTO()).collect(Collectors.toList()));
         dto.put("ships", this.getShips().stream().map(x -> x.makeShipDTO()).collect(Collectors.toList()));
+        dto.put("salvoes",this.getGame().getGameplayers().stream().flatMap(z -> z.getSalvos().stream().map(x -> x.makeSalvoDTO())).collect(Collectors.toList()));
+
         return dto;
     }
 
