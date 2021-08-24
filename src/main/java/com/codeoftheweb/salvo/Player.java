@@ -3,10 +3,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -20,7 +17,26 @@ public class Player {
     @OneToMany(mappedBy="player", fetch=FetchType.EAGER)
     Set<GamePlayer> gameplayers;
 
+    @OneToMany(mappedBy="playerID", fetch=FetchType.EAGER)
+    Set<Score> scores;
+
     public Player() {}
+
+    public Set<GamePlayer> getGameplayers() {
+        return gameplayers;
+    }
+
+    public void setGameplayers(Set<GamePlayer> gameplayers) {
+        this.gameplayers = gameplayers;
+    }
+
+    public Set<Score> getScores() {
+        return scores;
+    }
+
+    public void setScores(Set<Score> scores) {
+        this.scores = scores;
+    }
 
     public Player(String userName) {
         this.userName = userName;
@@ -50,9 +66,13 @@ public class Player {
         dto.put("email", this.getUserName());
         return dto;
     }
-    @JsonIgnore
-    public List<Game> getGames() {
-        return gameplayers.stream().map(sub -> sub.getGame()).collect(Collectors.toList());
+
+    public Optional<Score> getScore(Game juego){
+        return this.getScores().stream().filter(f-> f.getGameID().getId().equals(juego.getId())).findFirst();
     }
+    //@JsonIgnore
+    //public List<Game> getGames() {
+    //    return gameplayers.stream().map(sub -> sub.getGame()).collect(Collectors.toList());
+    //}
 
 }

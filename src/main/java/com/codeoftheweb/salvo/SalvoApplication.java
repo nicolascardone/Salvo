@@ -16,7 +16,7 @@ public class SalvoApplication {
 	@Bean
 	public CommandLineRunner initData(PlayerRepository playerRepository, GameRepository gameRepository,
                                       GamePlayerRepository gamePlayerRepository, ShipRepository shipRepository,
-                                      SalvoRepository salvoRepository) {
+                                      SalvoRepository salvoRepository, ScoreRepository scoreRepository) {
 		return (args) -> {
 		Player player2 = new Player("nicolascardone@gmail.com");
 		Player player1 = new Player("ncardone@pioix.edu.ar");
@@ -73,6 +73,11 @@ public class SalvoApplication {
         salvoRepository.save(salvo4);
         salvoRepository.save(salvo5);
         salvoRepository.save(salvo6);
+
+        Score score1 = new Score(LocalDateTime.now().plusHours(3) ,2.5,player1,game1);
+        Score score2 = new Score(LocalDateTime.now().plusHours(3) ,0.5,player2,game1);
+        scoreRepository.save(score1);
+        scoreRepository.save(score2);
 		};
 	}
 }

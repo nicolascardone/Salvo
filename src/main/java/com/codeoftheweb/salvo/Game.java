@@ -22,7 +22,18 @@ public class Game {
     @OneToMany(mappedBy="game", fetch=FetchType.EAGER)
     Set<GamePlayer> gameplayers;
 
+    @OneToMany(mappedBy="gameID", fetch=FetchType.EAGER)
+    Set<Score> scores;
+
     public Game () {}
+
+    public Set<Score> getScores() {
+        return scores;
+    }
+
+    public void setScores(Set<Score> scores) {
+        this.scores = scores;
+    }
 
     public Game(LocalDateTime creationDate) {
         this.creationDate = creationDate;
@@ -56,10 +67,19 @@ public class Game {
         dto.put("id", this.getId());
         dto.put("created", this.getCreationDate());
         dto.put("gamePlayers" , this.getGameplayers().stream().map(gp -> gp.makeGamePlayerDTO()).collect(Collectors.toList()));
+        dto.put("scores", this.getGameplayers().stream()
+                .map(x ->
+                        {
+                         if(x.getScore().isPresent()){
+                             return x.getScore().get().makeScoreDTO();
+                         }   else
+                         { return null;}
+                        }
+                ));
         return dto;
     }
-    @JsonIgnore
-    public List<Player> getPlayers() {
-        return gameplayers.stream().map(sub -> sub.getPlayer()).collect(Collectors.toList());
-    }
+    //@JsonIgnore
+    //public List<Player> getPlayers() {
+    //    return gameplayers.stream().map(sub -> sub.getPlayer()).collect(Collectors.toList());
+    //}
 }

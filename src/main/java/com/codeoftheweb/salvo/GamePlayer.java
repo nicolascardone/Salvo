@@ -4,9 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -93,6 +91,12 @@ public class GamePlayer {
         dto.put("player", this.getPlayer().makePlayerDTO());
         return dto;
     }
+    //List<Map<String, Object>> lista1
+    //        for(GamePlayer lgp:getGame().getGameplayers()){
+    //            for(Salvo )
+    //}
+
+
     public Map<String, Object> makeGameViewDTO(){
         Map<String, Object>  dto = new LinkedHashMap<>();
         dto.put("id", this.getGame().getId());
@@ -101,7 +105,12 @@ public class GamePlayer {
         dto.put("ships", this.getShips().stream().map(x -> x.makeShipDTO()).collect(Collectors.toList()));
         dto.put("salvoes",this.getGame().getGameplayers().stream().flatMap(z -> z.getSalvos().stream().map(x -> x.makeSalvoDTO())).collect(Collectors.toList()));
 
+
         return dto;
+    }
+
+    public Optional<Score> getScore(){
+        return this.getPlayer().getScore(this.getGame());
     }
 
 }
