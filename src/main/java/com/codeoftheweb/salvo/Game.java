@@ -73,7 +73,7 @@ public class Game {
                          if(x.getScore().isPresent()){
                              return x.getScore().get().makeScoreDTO();
                          }   else
-                         { return null;}
+                         { return "";}
                         }
                 ));
         return dto;
