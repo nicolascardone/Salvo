@@ -29,6 +29,14 @@ public class GamePlayer {
     @OneToMany(mappedBy="gamePlayer", fetch=FetchType.EAGER)
     private Set<Salvo> salvos;
 
+    @ElementCollection
+    @Column(name = "opponent")
+    private List<String> opponent = new ArrayList<>();
+
+    @ElementCollection
+    @Column(name = "self")
+    private List<String> self = new ArrayList<>();
+
     public GamePlayer () {}
 
     public GamePlayer(LocalDateTime joinDate, Game game, Player player) {
@@ -101,14 +109,20 @@ public class GamePlayer {
         Map<String, Object>  dto = new LinkedHashMap<>();
         dto.put("id", this.getGame().getId());
         dto.put("created",this.getGame().getCreationDate());
+        dto.put("gameState","PLACESHIPS");
         dto.put("gamePlayers", this.getGame().getGameplayers().stream().map(d -> d.makeGamePlayerDTO()).collect(Collectors.toList()));
         dto.put("ships", this.getShips().stream().map(x -> x.makeShipDTO()).collect(Collectors.toList()));
         dto.put("salvoes",this.getGame().getGameplayers().stream().flatMap(z -> z.getSalvos().stream().map(x -> x.makeSalvoDTO())).collect(Collectors.toList()));
-
+        dto.put("hits",this.makeHitsDTO());
 
         return dto;
     }
-
+    public Map<String, Object> makeHitsDTO() {
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("self",self);
+        dto.put("opponent",opponent);
+        return dto;
+    }
     public Optional<Score> getScore(){
         return this.getPlayer().getScore(this.getGame());
     }
