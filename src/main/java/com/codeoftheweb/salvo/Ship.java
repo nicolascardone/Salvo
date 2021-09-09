@@ -14,7 +14,7 @@ public class Ship {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private Long id;
-    private String shipType;
+    private String type;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="gamePlayer_id")
@@ -22,14 +22,14 @@ public class Ship {
 
     @ElementCollection
     @Column(name = "shipLocation")
-    private List<String> shipLocation = new ArrayList<>();
+    private List<String> shipLocations = new ArrayList<>();
 
     public Ship() {}
 
-    public Ship(String shipType, GamePlayer gamePlayer_id, List<String> shipLocation) {
-        this.shipType = shipType;
+    public Ship(String type, GamePlayer gamePlayer_id, List<String> shipLocations) {
+        this.type = type;
         this.gamePlayer_id = gamePlayer_id;
-        this.shipLocation = shipLocation;
+        this.shipLocations = shipLocations;
     }
 
     public Long getId() {
@@ -48,27 +48,27 @@ public class Ship {
         this.gamePlayer_id = gamePlayer_id;
     }
 
-    public List<String> getShipLocation() {
-        return shipLocation;
+    public List<String> getShipLocations() {
+        return shipLocations;
     }
 
-    public void setShipLocation(List<String> shipLocation) {
-        this.shipLocation = shipLocation;
+    public void setShipLocations(List<String> shipLocations) {
+        this.shipLocations = shipLocations;
     }
 
-    public String getShipType() {
-        return shipType;
+    public String getType() {
+        return type;
     }
 
-    public void setShipType(String shipType) {
-        this.shipType = shipType;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Map<String,Object > makeShipDTO(){
         Map<String,Object > dto = new LinkedHashMap<>();
 
-        dto.put("type", this.getShipType());
-        dto.put("locations", this.getShipLocation());
+        dto.put("type", this.getType());
+        dto.put("locations", this.getShipLocations());
     return dto;
     }
 }
