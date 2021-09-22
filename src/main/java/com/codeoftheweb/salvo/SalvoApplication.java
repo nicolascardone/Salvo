@@ -68,18 +68,18 @@ public class SalvoApplication {
 		gamePlayerRepository.save(gameplayer6);
 
 
-        Salvo salvo1 = new Salvo(1,gameplayer1, Arrays.asList("G1","G2","G3"));
-        Salvo salvo2 = new Salvo(1,gameplayer2,Arrays.asList("A1","A2","A3"));
-        Salvo salvo3 = new Salvo(2,gameplayer1, Arrays.asList("H2","H3","H4"));
-        Salvo salvo4 = new Salvo(2,gameplayer2, Arrays.asList("G7","G8"));
-        Salvo salvo5 = new Salvo(1, gameplayer3,Arrays.asList("H4","H5","H6"));
-        Salvo salvo6 = new Salvo(1, gameplayer4, Arrays.asList("F2","F3","F4","F5"));
-        salvoRepository.save(salvo1);
-        salvoRepository.save(salvo2);
-        salvoRepository.save(salvo3);
-        salvoRepository.save(salvo4);
-        salvoRepository.save(salvo5);
-        salvoRepository.save(salvo6);
+        //Salvo salvo1 = new Salvo(1,gameplayer1, Arrays.asList("G1","G2","G3"));
+            // Salvo salvo2 = new Salvo(1,gameplayer2,Arrays.asList("A1","A2","A3"));
+            //Salvo salvo3 = new Salvo(2,gameplayer1, Arrays.asList("H2","H3","H4"));
+            //Salvo salvo4 = new Salvo(2,gameplayer2, Arrays.asList("G7","G8"));
+            //Salvo salvo5 = new Salvo(1, gameplayer3,Arrays.asList("H4","H5","H6"));
+            //Salvo salvo6 = new Salvo(1, gameplayer4, Arrays.asList("F2","F3","F4","F5"));
+            //salvoRepository.save(salvo1);
+            //salvoRepository.save(salvo2);
+            //salvoRepository.save(salvo3);
+            //salvoRepository.save(salvo4);
+            //salvoRepository.save(salvo5);
+            //salvoRepository.save(salvo6);
 
         Score score1 = new Score(LocalDateTime.now().plusHours(3) ,2.5,player1,game1);
         Score score2 = new Score(LocalDateTime.now().plusHours(3) ,0.5,player2,game1);

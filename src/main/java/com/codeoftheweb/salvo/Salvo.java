@@ -22,14 +22,14 @@ public class Salvo {
 
     @ElementCollection
     @Column(name = "SalvoLocations")
-    private List<String> SalvoLocations = new ArrayList<>();
+    private List<String> salvoLocations = new ArrayList<>();
 
     public Salvo () {}
 
     public Salvo(int turn, GamePlayer gamePlayer, List<String> salvoLocations) {
         this.turn = turn;
         this.gamePlayer = gamePlayer;
-        SalvoLocations = salvoLocations;
+        this.salvoLocations = salvoLocations;
     }
 
     public Long getId() {
@@ -57,11 +57,11 @@ public class Salvo {
     }
 
     public List<String> getSalvoLocations() {
-        return SalvoLocations;
+        return salvoLocations;
     }
 
     public void setSalvoLocations(List<String> salvoLocations) {
-        SalvoLocations = salvoLocations;
+        this.salvoLocations = salvoLocations;
     }
 
     public Map<String,Object > makeSalvoDTO(){
