@@ -99,7 +99,7 @@ public class GamePlayer {
     //}
 
     public GamePlayer openente() {
-         return this.getGame().getGameplayers().stream().filter(b -> !b.getId().equals(this.getId())).findFirst().get();
+         return this.getGame().getGameplayers().stream().filter(b -> !b.getId().equals(this.getId())).findFirst().orElse(null);
     }
 
 
@@ -108,13 +108,13 @@ public class GamePlayer {
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("id", this.getGame().getId());
         dto.put("created", this.getGame().getCreationDate());
-        dto.put("gameState", "PLAY");
+        dto.put("gameState", GameState());
         dto.put("gamePlayers", this.getGame().getGameplayers().stream().map(d -> d.makeGamePlayerDTO()).collect(Collectors.toList()));
         dto.put("ships", this.getShips().stream().map(x -> x.makeShipDTO()).collect(Collectors.toList()));
         dto.put("salvoes", this.getGame().getGameplayers().stream().flatMap(z -> z.getSalvos().stream().map(x -> x.makeSalvoDTO())).collect(Collectors.toList()));
 
         Map<String, Object> hits = new LinkedHashMap<>();
-        if (openente() == null) {
+        if (openente() == null || this.getShips().size() == 0 || openente().getShips().size() == 0) {
             hits.put("self", new ArrayList<>());
             hits.put("opponent", new ArrayList<>());
         } else {
@@ -211,7 +211,7 @@ public class GamePlayer {
 
             hitsturn.put("turn", salvo.getTurn());
             hitsturn.put("hitLocations", hitLocations);
-            hitsturn.put("damage", damage);
+            hitsturn.put("damages", damage);
             hitsturn.put("missed", missed - hitLocations.size());
 
             dto.add(hitsturn);
@@ -223,6 +223,105 @@ public class GamePlayer {
 
     public Optional<Score> getScore() {
         return this.getPlayer().getScore(this.getGame());
+    }
+
+    public String GameState(){
+        System.out.println("HOLA");
+        String gameState = "UNDEFINED";
+        if(this.getShips().size() < 5 ){
+            gameState = "PLACESHIPS";
+            return gameState;
+        }
+        if(openente() == null){
+            gameState = "WAITINGFOROPP";
+            return gameState;
+        }
+
+        if(openente().getShips().size() != 5){
+            gameState = "WAIT";
+            return gameState;
+        }
+
+        GamePlayer player1 = this.getGame().getGameplayers().stream().min(Comparator.comparing(gamePlayer -> gamePlayer.getId())).get();
+
+        GamePlayer player2 = this.getGame().getGameplayers().stream().max(Comparator.comparing(gamePlayer -> gamePlayer.getId())).get();
+
+        int player1Turns = player1.getSalvos().size();
+        int player2Turns = player2.getSalvos().size();
+
+        GamePlayer player = this;
+
+        if (this.getId()==player1.getId()){
+            if (this.barcosHundidos(openente(), player)){
+                if (player1Turns>player2Turns){
+                    gameState =  "WAIT";
+                    return gameState ;
+                }
+                else if (this.barcosHundidos(player,openente())){
+                    gameState  =  "TIE";
+                    return gameState ;
+
+                }
+                else {
+                    gameState  =  "WON";
+                    return gameState ;
+                }
+            }
+            if (this.barcosHundidos(player,openente())){
+                gameState  =  "LOST";
+                return gameState ;
+            }
+        }
+        else {
+            if(this.barcosHundidos(openente(),player)){
+                if (this.barcosHundidos(player,openente())){
+                    gameState  = "TIE";
+                    return gameState ;
+                }
+                else {
+                    gameState  = "WON";
+                    return gameState ;
+                }
+            }
+            if(this.barcosHundidos(player, openente())){
+                if (player1Turns==player2Turns){
+                    gameState  = "LOST";
+                    return gameState ;
+                }
+            }
+        }
+        if((this.getSalvos().size() - openente().getSalvos().size()) > 0){
+            gameState = "WAIT";
+            return gameState;
+        }
+        if(this.getSalvos().size() == openente().getSalvos().size()) {
+            System.out.println("ACA2");
+            if (this.getId() > openente().getId()) {
+                System.out.println("ACA");
+                gameState = "WAIT";
+                return gameState;
+            } else {
+                gameState = "PLAY";
+                return gameState;
+            }
+        }
+
+
+        return gameState;
+    }
+
+    public boolean barcosHundidos(GamePlayer gpBarcos, GamePlayer gpSalvos) {
+
+        GamePlayer opponent = this.openente();
+
+        if (!gpBarcos.getShips().isEmpty() && !gpSalvos.getSalvos().isEmpty()) {
+            return  gpSalvos.getSalvos()
+                    .stream().flatMap(salvo -> salvo.getSalvoLocations().stream()).collect(Collectors.toList())
+                    .containsAll(gpBarcos.getShips()
+                            .stream().flatMap(ship -> ship.getShipLocations().stream())
+                            .collect(Collectors.toList()));
+        }
+        return false;
     }
 
     private Map<String, Object> makeMap(String key, Object value) {

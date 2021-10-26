@@ -81,14 +81,7 @@ public class SalvoApplication {
             //salvoRepository.save(salvo5);
             //salvoRepository.save(salvo6);
 
-        Score score1 = new Score(LocalDateTime.now().plusHours(3) ,2.5,player1,game1);
-        Score score2 = new Score(LocalDateTime.now().plusHours(3) ,0.5,player2,game1);
-        Score score3 = new Score(LocalDateTime.now().plusHours(4) , 1.5, player3, game2);
-        Score score4 = new Score(LocalDateTime.now().plusHours(4) , 1, player4, game2);
-        scoreRepository.save(score1);
-        scoreRepository.save(score2);
-        scoreRepository.save(score3);
-        scoreRepository.save(score4);
+
 		};
 	}
     @Bean

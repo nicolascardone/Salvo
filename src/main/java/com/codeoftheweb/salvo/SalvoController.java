@@ -27,6 +27,8 @@ public class SalvoController {
     private ShipRepository shipRepository;
     @Autowired
     private SalvoRepository salvoRepository;
+    @Autowired
+    private ScoreRepository scoreRepository;
 
     private int n = 1;
 
@@ -57,9 +59,21 @@ public class SalvoController {
         }else {
             if (playerRepository.findByUserName(authentication.getName()).getGameplayers().stream()
                     .anyMatch(m -> m.getId().equals(gamePlayerId))) {
+                if(gamePlayer.GameState().equals("WON")){
+                    Score puntaje= new Score(LocalDateTime.now() ,1,gamePlayer.getPlayer(),gamePlayer.getGame());
+                    scoreRepository.save(puntaje);
+                }
+                else if (gamePlayer.GameState() .equals("TIE")){
+                    Score puntaje= new Score(LocalDateTime.now() ,0.5,gamePlayer.getPlayer(),gamePlayer.getGame());
+                    scoreRepository.save(puntaje);
+                }
+                else if (gamePlayer.GameState().equals("LOST")){
+                    Score puntaje= new Score(LocalDateTime.now() ,0,gamePlayer.getPlayer(),gamePlayer.getGame());
+                    scoreRepository.save(puntaje);
+                }
                 return new ResponseEntity<>(gamePlayer.makeGameViewDTO(), HttpStatus.ACCEPTED);
             } else {
-                return new ResponseEntity<>(makeMap("que miras virgo", 7), HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(makeMap("error", "que miras "), HttpStatus.UNAUTHORIZED);
             }
         }
     }
